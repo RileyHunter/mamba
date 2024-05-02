@@ -1,7 +1,7 @@
 import numpy as np
 
 def get_data():
-    data = np.loadtxt('reads_2400.txt')
+    data = np.loadtxt('reads_81888.txt')
 
     # Unique characters
     vals = sorted(list(set(data)))
