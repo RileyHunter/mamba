@@ -21,7 +21,7 @@ n_layers = 6
 dropout = 0.2
 # ---------
 
-raw, encode, decode = get_data()
+raw, encode, decode, vocab_size = get_data()
 
 # train and test splits
 data = torch.tensor(encode(raw), dtype=torch.long)

@@ -15,4 +15,4 @@ def get_data():
     decode = lambda xx: ''.join([itos[x] for x in xx])
     encode("Hello!")
     print(decode(encode("Hello!")))
-    return text, encode, decode
+    return text, encode, decode, vocab_size
