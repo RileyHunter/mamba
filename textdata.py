@@ -1,5 +1,5 @@
 def get_data():
-    with open("input.txt", "r") as f:
+    with open("shakespeare.txt", "r") as f:
       text = f.read()
 
     # Unique characters
