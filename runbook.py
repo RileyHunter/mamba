@@ -5,7 +5,7 @@ from torch.nn.parameter import Parameter
 from tqdm import tqdm
 from mamba_ssm import Mamba
 #hyperparams
-epochs = 100
+epochs = 10
 lr = 1e-3
 batch_size = 64
 block_size = 256
