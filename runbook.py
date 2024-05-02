@@ -4,7 +4,7 @@ from torch.nn import  functional as F
 from torch.nn.parameter import Parameter
 from tqdm import tqdm
 from mamba_ssm import Mamba
-from textdata import get_data
+from bible import get_data
 #hyperparams
 #epochs = 10
 lr = 1e-3
