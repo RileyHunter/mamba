@@ -10,8 +10,8 @@ def get_data():
     print(vocab_size)
 
     #Tokenizers
-    ftoi = {ch:i for i,ch in enumerate(chars)}
-    itof = {i:ch for i,ch in enumerate(chars)}
+    ftoi = {ch:i for i,ch in enumerate(vals)}
+    itof = {i:ch for i,ch in enumerate(vals)}
     encode = lambda xx: [ftoi[x] for x in xx]
     decode = lambda xx: ','.join([itof[x] for x in xx])
     return data, encode, decode, vocab_size
