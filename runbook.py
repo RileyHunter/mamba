@@ -5,12 +5,12 @@ from torch.nn.parameter import Parameter
 from tqdm import tqdm
 from mamba_ssm import Mamba
 #hyperparams
-epochs = 10
+#epochs = 10
 lr = 1e-3
 batch_size = 64
 block_size = 256
 device = "cuda" if torch.cuda.is_available() else "cpu"
-max_iters = 10000
+max_iters = 1000 # Default: 10000
 print_iters = 100
 eval_iters = 10
 eval_interval = 300
