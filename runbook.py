@@ -4,6 +4,7 @@ from torch.nn import  functional as F
 from torch.nn.parameter import Parameter
 from tqdm import tqdm
 from mamba_ssm import Mamba
+from textdata import get_data
 #hyperparams
 #epochs = 10
 lr = 1e-3
@@ -19,26 +20,11 @@ n_heads = 6
 n_layers = 6
 dropout = 0.2
 # ---------
-with open("input.txt", "r") as f:
-  text = f.read()
 
-# Unique characters
-chars = sorted(list(set(text)))
-print(''.join(chars))
-vocab_size = len(chars)
-print(vocab_size)
-
-#Tokenizers
-stoi = {ch:i for i,ch in enumerate(chars)}
-itos = {i:ch for i,ch in enumerate(chars)}
-encode = lambda xx: [stoi[x] for x in xx]
-decode = lambda xx: ''.join([itos[x] for x in xx])
-encode("Hello!")
-print(decode(encode("Hello!")))
-
+raw, encode, decode = get_data()
 
 # train and test splits
-data = torch.tensor(encode(text), dtype=torch.long)
+data = torch.tensor(encode(raw), dtype=torch.long)
 n = int(len(data)*0.9)
 train_data = data[:n]
 val_data = data[n:]
