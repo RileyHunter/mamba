@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from torch.nn import  functional as F
 from mamba_ssm import Mamba
 
 # Config
@@ -139,7 +140,7 @@ class BigramNeuralNetwork(nn.Module):
       idx_cond = idx[:,-block_size:]
       logits, loss = self(idx_cond)
       last_timestep = logits[:,-1,:]
-      probs = torch.nn.functional.softmax(last_timestep, dim=1)
+      probs = F.softmax(last_timestep, dim=1)
       next_index = torch.multinomial(probs, num_samples=1)
       idx = torch.cat((idx, next_index), dim=1)
     #for arr in idx:

@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-from torch.nn import  functional as F
 from torch.nn.parameter import Parameter
 from tqdm import tqdm
 from electricity import get_data
