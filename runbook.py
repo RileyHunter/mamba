@@ -48,10 +48,12 @@ def estimate_loss():
       if first_batch:
         print('batch X,Y', X.shape, Y.shape)
         print(X)
+        print(Y)
         print('logits', logits.shape, logits)
         print('loss', loss.shape, loss)
         first_batch = False
       losses[k] = loss.item()
+      #baseline_loss = nn.functional.cross_entropy()
     out[split] = losses.mean()
   model.train()
   return out
@@ -78,7 +80,7 @@ device = "cuda"
 m = model.to(device)
 print("Uses device " + device)
 MODEL_CHECKPOINT = "./differentattention/model_{iter}.pt"
-losses_data = {"train":[], "test":[]}
+losses_data = {"train":[], "test":[], "baseline":[]}
 for iter in tqdm(range(epoch ,max_iters)):
   if iter % eval_iters == 0:
     losses = estimate_loss()
