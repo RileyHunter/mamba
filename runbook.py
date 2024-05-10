@@ -36,6 +36,7 @@ def get_batch(split):
 first_batch = True
 @torch.no_grad()
 def estimate_loss():
+  global first_batch
   out = {}
   model.eval()
   for split in ['train', 'test']:
