@@ -1,7 +1,7 @@
 import numpy as np
 
 def get_data(decimals=3):
-    data = [str(round(v, decimals) for v in np.loadtxt('reads_81888.txt')]
+    data = [str(round(v, decimals)) for v in np.loadtxt('reads_81888.txt')]
 
     # Unique characters
     vals = sorted(list(set(data)))
