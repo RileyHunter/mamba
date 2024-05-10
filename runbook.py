@@ -14,7 +14,7 @@ eval_iters = 10
 eval_interval = 300
 # ---------
 
-raw, encode, decode, vocab_size = get_data(1)
+raw, encode, decode, vocab_size = get_data(2)
 
 # train and test splits
 data = torch.tensor(encode(raw), dtype=torch.long)
