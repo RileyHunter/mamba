@@ -4,6 +4,7 @@ from torch.nn.parameter import Parameter
 from tqdm import tqdm
 from electricity import get_data
 from bigramnn import Model, batch_size, block_size, device
+from baselines import MeanPredictor
 #from tsmamba import Model
 #hyperparams
 lr = 1e-3
@@ -41,6 +42,7 @@ def estimate_loss():
     losses = torch.zeros(eval_iters)
     for k in range(eval_iters):
       X,Y = get_batch(split)
+      print('batch X,Y', X.shape, Y.shape)
       logits, loss = model(X,Y)
       losses[k] = loss.item()
     out[split] = losses.mean()
@@ -48,6 +50,7 @@ def estimate_loss():
   return out
 
 model = Model(vocab_size)
+baseline = MeanPredictor()
 optimizer = torch.optim.AdamW(model.parameters(),lr=lr)
 
 # checkpoint = torch.load('model.pt')
@@ -107,5 +110,6 @@ for iter in tqdm(range(epoch ,max_iters)):
 torch.save(model.state_dict(), "./differentattention/model.pt")
 #Generate from the model:
 output = m.generate(torch.zeros((1,2), dtype=torch.long).to(device).contiguous(), 1000)
+
 for arr in output:
     print(decode(arr.cpu().detach().numpy()))
