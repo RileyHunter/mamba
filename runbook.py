@@ -33,7 +33,7 @@ def get_batch(split):
   y = torch.stack([data[ind+1:ind+block_size+1] for ind in index])
   return x.to(device),y.to(device)
 
-
+first_batch = True
 @torch.no_grad()
 def estimate_loss():
   out = {}
@@ -42,7 +42,9 @@ def estimate_loss():
     losses = torch.zeros(eval_iters)
     for k in range(eval_iters):
       X,Y = get_batch(split)
-      print('batch X,Y', X.shape, Y.shape)
+      if first_batch:
+        print('batch X,Y', X.shape, Y.shape)
+        print(X)
       logits, loss = model(X,Y)
       losses[k] = loss.item()
     out[split] = losses.mean()
