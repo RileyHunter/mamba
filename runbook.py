@@ -3,10 +3,11 @@ import torch.nn as nn
 from torch.nn.parameter import Parameter
 from tqdm import tqdm
 from electricity import get_data
-from bigramnn import BigramNeuralNetwork, batch_size, block_size, device
+from bigramnn import Model, batch_size, block_size, device
+#from tsmamba import Model
 #hyperparams
 lr = 1e-3
-max_iters = 1000 # Default: 10000
+max_iters = 50 # Default: 10000
 print_iters = 100
 eval_iters = 10
 eval_interval = 300
@@ -46,7 +47,7 @@ def estimate_loss():
   model.train()
   return out
 
-model = BigramNeuralNetwork(vocab_size)
+model = Model(vocab_size)
 optimizer = torch.optim.AdamW(model.parameters(),lr=lr)
 
 # checkpoint = torch.load('model.pt')
@@ -88,7 +89,7 @@ for iter in tqdm(range(epoch ,max_iters)):
     model.eval()
     with torch.no_grad():
       #Generate from the model:
-      output = m.generate(torch.zeros((1,2), dtype=torch.long).to(device).contiguous(), 1000  )
+      output = m.generate(torch.zeros((1,2), dtype=torch.long).to(device).contiguous(), 1000)
       for arr in output:
         print(decode(arr.cpu().detach().numpy()))
     print(f"Step {iter}, train loss:{losses['train']:.4f}, test loss:{losses['test']:.4f}")
@@ -105,6 +106,6 @@ for iter in tqdm(range(epoch ,max_iters)):
   optimizer.step()
 torch.save(model.state_dict(), "./differentattention/model.pt")
 #Generate from the model:
-output = m.generate(torch.zeros((1,2), dtype=torch.long).to(device).contiguous(), 1000  )
+output = m.generate(torch.zeros((1,2), dtype=torch.long).to(device).contiguous(), 1000)
 for arr in output:
     print(decode(arr.cpu().detach().numpy()))

@@ -2,7 +2,7 @@ sudo docker run -it --gpus all nvidia/cuda:12.4.1-devel-ubi8
 dnf install python3.11 -y
 dnf install python3.11-pip -y
 dnf install git -y
-python3.11 -m pip install triton packaging wheel seaborn
+python3.11 -m pip install triton packaging wheel seaborn einops
 python3.11 -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 python3.11 -m pip install mamba-ssm causal-conv1d
 git clone https://github.com/RileyHunter/mamba.git

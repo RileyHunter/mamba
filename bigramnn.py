@@ -102,11 +102,10 @@ class Block(nn.Module):
   def forward(self, x):
     x = x + self.sa_head(self.ln1(x))
     x = x + self.ffn(self.ln2(x))
-
     return x
 
-class BigramNeuralNetwork(nn.Module):
-  def __init__(self,vocab_size):
+class Model(nn.Module):
+  def __init__(self, vocab_size):
     super().__init__()
     self.token_embedding_table = nn.Embedding(vocab_size,n_embed)
     self.position_embedding_table = nn.Embedding(block_size,n_embed)
