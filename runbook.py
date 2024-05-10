@@ -8,7 +8,7 @@ from bigramnn import Model, batch_size, block_size, device
 #from tsmamba import Model
 #hyperparams
 lr = 1e-3
-max_iters = 50 # Default: 10000
+max_iters = 1000 # Default: 10000
 print_iters = 100
 eval_iters = 10
 eval_interval = 300
