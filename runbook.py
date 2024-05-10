@@ -4,7 +4,7 @@ from torch.nn.parameter import Parameter
 from tqdm import tqdm
 from electricity import get_data
 from bigramnn import Model, batch_size, block_size, device
-from baselines import MeanPredictor
+#from baselines import MeanPredictor
 #from tsmamba import Model
 #hyperparams
 lr = 1e-3
@@ -50,7 +50,7 @@ def estimate_loss():
   return out
 
 model = Model(vocab_size)
-baseline = MeanPredictor()
+#baseline = MeanPredictor()
 optimizer = torch.optim.AdamW(model.parameters(),lr=lr)
 
 # checkpoint = torch.load('model.pt')
