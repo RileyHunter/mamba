@@ -9,7 +9,7 @@ from bigramnn import Model, batch_size, block_size, device
 #hyperparams
 lr = 1e-3
 max_iters = 100 # Default: 10000
-print_iters = 100
+print_iters = 50
 eval_iters = 10
 eval_interval = 300
 # ---------
@@ -17,6 +17,8 @@ eval_interval = 300
 raw, encode, decode, vocab_size = get_data(2)
 modal_token = encode(['0.12'])[0]
 print(f'Modal token is {modal_token}')
+baseline_logits = torch.zeros((batch_size * 256, vocab_size))
+print(baseline_logits)
 # train and test splits
 data = torch.tensor(encode(raw), dtype=torch.long)
 n = int(len(data)*0.9)
