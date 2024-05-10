@@ -15,7 +15,8 @@ eval_interval = 300
 # ---------
 
 raw, encode, decode, vocab_size = get_data(2)
-
+modal_token = encode('0.12')
+print(f'Modal token is {modal_token}')
 # train and test splits
 data = torch.tensor(encode(raw), dtype=torch.long)
 n = int(len(data)*0.9)
