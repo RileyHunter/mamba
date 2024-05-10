@@ -18,7 +18,8 @@ raw, encode, decode, vocab_size = get_data(2)
 modal_token = encode(['0.12'])[0]
 print(f'Modal token is {modal_token}')
 baseline_logits = torch.zeros((batch_size * 256, vocab_size))
-baseline_logits[:,1] = 1
+baseline_logits[:,modal_token] = 1
+baseline_logits = baseline_logits.to(device)
 print(baseline_logits)
 # train and test splits
 data = torch.tensor(encode(raw), dtype=torch.long)
@@ -45,6 +46,7 @@ def estimate_loss():
   model.eval()
   for split in ['train', 'test']:
     losses = torch.zeros(eval_iters)
+    baseline_losses = torch.zeros(eval_iters)
     for k in range(eval_iters):
       X,Y = get_batch(split)
       logits, loss = model(X,Y)
@@ -56,8 +58,10 @@ def estimate_loss():
         print('loss', loss.shape, loss)
         first_batch = False
       losses[k] = loss.item()
-      #baseline_loss = nn.functional.cross_entropy()
+      baseline_loss = nn.functional.cross_entropy(baseline_logits, Y)
+      baseline_losses[k] = baseline_loss.item()
     out[split] = losses.mean()
+    out['baseline'] = baseline_losses.mean()
   model.train()
   return out
 
@@ -89,6 +93,7 @@ for iter in tqdm(range(epoch ,max_iters)):
     losses = estimate_loss()
     losses_data['train'].append(losses['train'].cpu().numpy())
     losses_data['test'].append(losses['test'].cpu().numpy())
+    losses_data['baseline'].append(losses['baseline'].cpu().numpy())
     print(f"Step {iter}, train loss:{losses['train']:.4f}, test loss:{losses['test']:.4f}")
 
   if iter % print_iters == 0:
@@ -101,13 +106,14 @@ for iter in tqdm(range(epoch ,max_iters)):
             }, MODEL_CHECKPOINT.format(iter=iter))
     losses_data['train'].append(losses['train'].cpu().numpy())
     losses_data['test'].append(losses['test'].cpu().numpy())
+    losses_data['baseline'].append(losses['baseline'].cpu().numpy())
     model.eval()
     with torch.no_grad():
       #Generate from the model:
       output = m.generate(torch.zeros((1,2), dtype=torch.long).to(device).contiguous(), 1000)
       for arr in output:
         print(decode(arr.cpu().detach().numpy()))
-    print(f"Step {iter}, train loss:{losses['train']:.4f}, test loss:{losses['test']:.4f}")
+    print(f"Step {iter}, train loss:{losses['train']:.4f}, test loss:{losses['test']:.4f}, baseline loss:{losses['baseline']:.4f}")
     model.train()
 
   #Get data
