@@ -3,6 +3,10 @@ import numpy as np
 def get_data(decimals=3):
     data = [str(round(v, decimals)) for v in np.loadtxt('reads_81888.txt')]
 
+    counts = {}
+    for i in data:
+        counts[i] = (1 if i not in counts else counts[i]) + 1
+    print(counts)
     # Unique characters
     vals = sorted(list(set(data)))
     print(','.join(vals))
