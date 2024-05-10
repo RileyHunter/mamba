@@ -18,6 +18,7 @@ raw, encode, decode, vocab_size = get_data(2)
 modal_token = encode(['0.12'])[0]
 print(f'Modal token is {modal_token}')
 baseline_logits = torch.zeros((batch_size * 256, vocab_size))
+baseline_logits[:,1] = 1
 print(baseline_logits)
 # train and test splits
 data = torch.tensor(encode(raw), dtype=torch.long)
