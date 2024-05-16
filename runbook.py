@@ -16,7 +16,7 @@ eval_iters = 10
 eval_interval = 300
 # ---------
 
-raw, encode, decode, vocab_size = get_data(3)
+raw, encode, decode, vocab_size = get_data(2)
 modal_token = encode(['0.12'])[0]
 print(f'Modal token is {modal_token}')
 baseline_logits = torch.zeros((batch_size*block_size, vocab_size))
