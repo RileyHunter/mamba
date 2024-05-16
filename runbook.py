@@ -94,7 +94,7 @@ for iter in tqdm(range(epoch ,max_iters)):
     losses_data['train'].append(losses['train'].cpu().numpy())
     losses_data['test'].append(losses['test'].cpu().numpy())
     losses_data['baseline'].append(losses['baseline'].cpu().numpy())
-    print(f"Step {iter}, train loss:{losses['train']:.4f}, test loss:{losses['test']:.4f}")
+    print(f"Step {iter}, train loss:{losses['train']:.4f}, test loss:{losses['test']:.4f}, baseline loss:{losses['baseline']:.4f}")
 
   if iter % print_iters == 0:
     losses = estimate_loss()
@@ -126,8 +126,14 @@ for iter in tqdm(range(epoch ,max_iters)):
   torch.nn.utils.clip_grad.clip_grad_norm_(model.parameters(), 1.0)
   optimizer.step()
 torch.save(model.state_dict(), "./differentattention/model.pt")
+
 #Generate from the model:
+print('RAW GENERATION')
 output = m.generate(torch.zeros((1,2), dtype=torch.long).to(device).contiguous(), 1000)
 
 for arr in output:
     print(decode(arr.cpu().detach().numpy()))
+    
+print('AGAINST REAL DATA')
+real_data = val_data
+print(real_data.shape)
