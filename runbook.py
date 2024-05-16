@@ -17,7 +17,7 @@ eval_interval = 300
 raw, encode, decode, vocab_size = get_data(2)
 modal_token = encode(['0.12'])[0]
 print(f'Modal token is {modal_token}')
-baseline_logits = torch.zeros((batch_size*256, vocab_size))
+baseline_logits = torch.zeros((batch_size*block_size, vocab_size))
 baseline_logits[:,modal_token] = 1
 baseline_logits = baseline_logits.to(device)
 print(baseline_logits)
@@ -137,12 +137,23 @@ output = m.generate(torch.zeros((1,2), dtype=torch.long).to(device).contiguous()
 for arr in output:
     print(decode(arr.cpu().detach().numpy()))
     
-print('NEXT TOKEN PREDICTION')
+print('PREDICTION W/O HINTS')
 prefix = val_data[:block_size]
 
 output = m.generate(torch.stack([prefix]).to(device), pred_size)
 print('Preds')
 for arr in output:
     print(decode(arr.cpu().detach().numpy()))
+print('Ground truth')
+print(decode(val_data[:block_size+pred_size].cpu().detach().numpy()))
+
+print('PREDICTION W HINTS')
+prefix = val_data[:block_size+pred_size]
+output = val_data[:block_size]
+for i in range(pred_size):
+  preds = m.generate(torch.stack([prefix[i:i+block_size]]).to(device), 1)
+  output.push(decode(preds.cpu().detach().numpy())[-1])
+print('Preds')
+print(output)
 print('Ground truth')
 print(decode(val_data[:block_size+pred_size].cpu().detach().numpy()))
