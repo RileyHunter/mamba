@@ -10,7 +10,7 @@ import numpy as np
 #from tsmamba import Model
 #hyperparams
 lr = 1e-3
-max_iters = 200 # Default: 10000
+max_iters = 50 # Default: 10000
 print_iters = 50
 eval_iters = 10
 eval_interval = 300
