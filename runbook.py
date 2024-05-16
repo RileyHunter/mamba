@@ -4,6 +4,8 @@ from torch.nn.parameter import Parameter
 from tqdm import tqdm
 from electricity import get_data
 from bigramnn import Model, batch_size, block_size, device
+import numpy as np
+
 #from baselines import MeanPredictor
 #from tsmamba import Model
 #hyperparams
@@ -149,10 +151,11 @@ print(decode(val_data[:block_size+pred_size].cpu().detach().numpy()))
 
 print('PREDICTION W HINTS')
 prefix = val_data[:block_size+pred_size]
-output = val_data[:block_size].cpu().detach().numpy()
+output_raw = []
 for i in range(pred_size):
   preds = m.generate(torch.stack([prefix[i:i+block_size]]).to(device), 1)
-  output.append(decode(preds.cpu().detach().numpy())[-1])
+  output_raw.append(decode(preds.cpu().detach().numpy())[-1])
+output = np.append(val_data[:block_size].cpu().detach().numpy(), output_raw)
 print('Preds')
 print(output)
 print('Ground truth')
