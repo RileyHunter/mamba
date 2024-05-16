@@ -154,7 +154,7 @@ prefix = val_data[:block_size+pred_size]
 output = val_data[:block_size].cpu().detach().numpy()
 for i in range(pred_size):
   preds = m.generate(torch.stack([prefix[i:i+block_size]]).to(device), 1)
-  output = np.append(output, preds[0][-1])
+  output = np.append(output, preds.cpu().detach().numpy()[0][-1])
   print(preds, output)
 output = decode(output)
 print('Preds')
