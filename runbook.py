@@ -151,13 +151,12 @@ print(decode(val_data[:block_size+pred_size].cpu().detach().numpy()))
 
 print('PREDICTION W HINTS')
 prefix = val_data[:block_size+pred_size]
-output_raw = []
+output = val_data[:block_size].cpu().detach().numpy()
 for i in range(pred_size):
   preds = m.generate(torch.stack([prefix[i:i+block_size]]).to(device), 1)
-  decoded = decode(preds[0].cpu().detach().numpy())
-  print('decode', decoded, decoded[-1])
-  output_raw.append(decoded[-1])
-output = np.append(decode(val_data[:block_size].cpu().detach().numpy()), output_raw)
+  output = np.append(output, preds[0][-1])
+  print(preds, output)
+output = decode(output)
 print('Preds')
 print(output)
 print('Ground truth')
