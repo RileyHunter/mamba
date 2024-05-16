@@ -8,7 +8,7 @@ from bigramnn import Model, batch_size, block_size, device
 #from tsmamba import Model
 #hyperparams
 lr = 1e-3
-max_iters = 100 # Default: 10000
+max_iters = 50 # Default: 10000
 print_iters = 50
 eval_iters = 10
 eval_interval = 300
@@ -136,6 +136,6 @@ for arr in output:
     
 print('NEXT TOKEN PREDICTION')
 real_data = val_data[:block_size]
-output = m.generate(torch.stack(real_data).to(device), 128)
+output = m.generate(torch.stack([real_data]).to(device), 128)
 for arr in output:
     print(decode(arr.cpu().detach().numpy()))
