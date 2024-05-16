@@ -145,4 +145,4 @@ print('Preds')
 for arr in output:
     print(decode(arr.cpu().detach().numpy()))
 print('Ground truth')
-print(val_data[:block_size+pred_size])
+print(decode(val_data[:block_size+pred_size].cpu().detach().numpy()))
