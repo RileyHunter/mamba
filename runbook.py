@@ -17,7 +17,7 @@ eval_interval = 300
 raw, encode, decode, vocab_size = get_data(2)
 modal_token = encode(['0.12'])[0]
 print(f'Modal token is {modal_token}')
-baseline_logits = torch.zeros((batch_size, vocab_size))
+baseline_logits = torch.zeros((batch_size*256, vocab_size))
 baseline_logits[:,modal_token] = 1
 baseline_logits = baseline_logits.to(device)
 print(baseline_logits)
@@ -58,7 +58,7 @@ def estimate_loss():
         print('loss', loss.shape, loss)
         first_batch = False
       losses[k] = loss.item()
-      baseline_loss = nn.functional.cross_entropy(baseline_logits, Y)
+      baseline_loss = nn.functional.cross_entropy(baseline_logits, Y.view(batch_size*256))
       baseline_losses[k] = baseline_loss.item()
     out[split] = losses.mean()
     out['baseline'] = baseline_losses.mean()
