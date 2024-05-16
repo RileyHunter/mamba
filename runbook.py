@@ -155,9 +155,9 @@ output_raw = []
 for i in range(pred_size):
   preds = m.generate(torch.stack([prefix[i:i+block_size]]).to(device), 1)
   decoded = decode(preds[0].cpu().detach().numpy())
-  print('decode', decoded)
+  print('decode', decoded, decoded[-1])
   output_raw.append(decoded[-1])
-output = np.append(val_data[:block_size].cpu().detach().numpy(), output_raw)
+output = np.append(decode(val_data[:block_size].cpu().detach().numpy()), output_raw)
 print('Preds')
 print(output)
 print('Ground truth')
