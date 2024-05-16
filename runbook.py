@@ -128,14 +128,21 @@ for iter in tqdm(range(epoch ,max_iters)):
 torch.save(model.state_dict(), "./differentattention/model.pt")
 
 #Generate from the model:
+
+pred_size = 128
+
 print('RAW GENERATION')
-output = m.generate(torch.zeros((1,2), dtype=torch.long).to(device).contiguous(), 128)
+output = m.generate(torch.zeros((1,2), dtype=torch.long).to(device).contiguous(), pred_size)
 
 for arr in output:
     print(decode(arr.cpu().detach().numpy()))
     
 print('NEXT TOKEN PREDICTION')
-real_data = val_data[:block_size]
-output = m.generate(torch.stack([real_data]).to(device), 128)
+prefix = val_data[:block_size]
+
+output = m.generate(torch.stack([prefix]).to(device), pred_size)
+print('Preds')
 for arr in output:
     print(decode(arr.cpu().detach().numpy()))
+print('Ground truth')
+print(val_data[:block_size+pred_size])
