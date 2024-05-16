@@ -129,11 +129,13 @@ torch.save(model.state_dict(), "./differentattention/model.pt")
 
 #Generate from the model:
 print('RAW GENERATION')
-output = m.generate(torch.zeros((1,2), dtype=torch.long).to(device).contiguous(), 1000)
+output = m.generate(torch.zeros((1,2), dtype=torch.long).to(device).contiguous(), 128)
 
 for arr in output:
     print(decode(arr.cpu().detach().numpy()))
     
-print('AGAINST REAL DATA')
-real_data = val_data
-print(real_data.shape)
+print('NEXT TOKEN PREDICTION')
+real_data = val_data[:block_size]
+output = m.generate(torch.tensor(real_data).to(device), 128)
+for arr in output:
+    print(decode(arr.cpu().detach().numpy()))
