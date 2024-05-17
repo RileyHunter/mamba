@@ -149,12 +149,13 @@ for arr in output:
 print('Ground truth')
 print(decode(val_data[:block_size+pred_size].cpu().detach().numpy()))
 
+pred_length = 24
 print('PREDICTION W HINTS')
 prefix = val_data[:block_size+pred_size]
 output = val_data[:block_size].cpu().detach().numpy()
-for i in range(0, pred_size, 24):
-  preds = m.generate(torch.stack([prefix[i:i+block_size]]).to(device), 24)
-  output = np.append(output, preds.cpu().detach().numpy()[0][-1])
+for i in range(0, pred_size, pred_length):
+  preds = m.generate(torch.stack([prefix[i:i+block_size]]).to(device), pred_length)
+  output = np.append(output, preds.cpu().detach().numpy()[0][-pred_length:])
 output = decode(output)
 print('Preds')
 print(output)
