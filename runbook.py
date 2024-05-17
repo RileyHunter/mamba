@@ -131,7 +131,7 @@ torch.save(model.state_dict(), "./differentattention/model.pt")
 
 #Generate from the model:
 
-pred_size = 128
+pred_size = 24*10
 
 print('RAW GENERATION')
 output = m.generate(torch.zeros((1,2), dtype=torch.long).to(device).contiguous(), pred_size)
